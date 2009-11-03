@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bindings xmlns="http://java.sun.com/xml/ns/jaxb"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    version="2.0">
+    
+    <bindings schemaLocation="http://www.fedora-commons.org/definitions/1/0/foxml1-1.xsd" 
+    node="/xsd:schema/xsd:complexType[@name='propertyType']/xsd:attribute[@name='NAME']/xsd:simpleType">
+	    <typesafeEnumClass name="PropertyTypeName" />
+	</bindings>
+	
+	<bindings schemaLocation="http://www.fedora-commons.org/definitions/1/0/foxml1-1.xsd" 
+	node="/xsd:schema/xsd:complexType[@name='contentLocationType']/xsd:attribute[@name='TYPE']/xsd:simpleType">
+	    <typesafeEnumClass name="ContentLocationTypeValue" />
+	</bindings>
+	
+	<bindings schemaLocation="http://www.fedora-commons.org/definitions/1/0/foxml1-1.xsd" 
+	node="/xsd:schema/xsd:complexType[@name='contentDigestType']/xsd:attribute[@name='TYPE']/xsd:simpleType">
+	    <typesafeEnumClass name="DigestType" />
+	</bindings>
+	
+	<bindings schemaLocation="http://www.fedora-commons.org/definitions/1/0/foxml1-1.xsd" 
+	node="/xsd:schema/xsd:complexType[@name='datastreamType']/xsd:attribute[@name='CONTROL_GROUP']/xsd:simpleType">
+	    <typesafeEnumClass name="ControlGroupValue" />
+	</bindings>
+	
+	<bindings schemaLocation="http://www.fedora-commons.org/definitions/1/0/foxml1-1.xsd" 
+	node="/xsd:schema/xsd:complexType[@name='digitalObjectType']/xsd:attribute[@name='VERSION']/xsd:simpleType">
+	    <typesafeEnumClass name="VersionValue">
+	    	<typesafeEnumMember name="OnePointOne" value="1.1" />
+	    </typesafeEnumClass>
+	</bindings>
+
+</bindings>

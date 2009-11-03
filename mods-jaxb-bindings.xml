@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bindings xmlns="http://java.sun.com/xml/ns/jaxb"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    version="2.0">
+    
+    <bindings schemaLocation="http://www.loc.gov/standards/mods/v3/mods-3-3.xsd"
+        node="/xsd:schema/xsd:complexType[@name='relatedItemType']/xsd:attribute[@name='type']">
+        <property name="riType" />
+    </bindings>
+    
+    <bindings schemaLocation="http://www.loc.gov/standards/mods/v3/mods-3-3.xsd"
+        node="/xsd:schema/xsd:complexType[@name='nameType']/xsd:attribute[@name='type']">
+        <property name="nType" />
+    </bindings>
+    
+    <bindings schemaLocation="http://www.loc.gov/standards/mods/v3/mods-3-3.xsd"
+        node="/xsd:schema/xsd:complexType[@name='titleInfoType']//xsd:attribute[@name='type']">
+        <property name="tiType" />
+    </bindings>
+    
+    <bindings schemaLocation="http://www.loc.gov/standards/mods/v3/mods-3-3.xsd"
+        node="/xsd:schema/xsd:complexType[@name='accessConditionType']//xsd:attribute[@name='type']">
+        <property name="acType" />
+    </bindings>
+    
+    <bindings schemaLocation="http://www.loc.gov/standards/mods/v3/mods-3-3.xsd"
+        node="/xsd:schema/xsd:complexType[@name='stringPlusDisplayLabelPlusType']//xsd:attribute[@name='type']">
+        <property name="spdType" />
+    </bindings>
+    
+    <bindings schemaLocation="http://www.loc.gov/standards/mods/v3/mods-3-3.xsd"
+        node="/xsd:schema/xsd:complexType[@name='stringPlusAuthorityPlusTypePlusLanguage']//xsd:attribute[@name='type']">
+        <property name="spaType" />
+    </bindings>
+    
+    <bindings schemaLocation="http://www.loc.gov/standards/mods/v3/mods-3-3.xsd"
+        node="/xsd:schema/xsd:attributeGroup[@name='language']/xsd:attribute[@name='lang']">
+        <property name="mLang" />
+    </bindings>
+
+</bindings>
