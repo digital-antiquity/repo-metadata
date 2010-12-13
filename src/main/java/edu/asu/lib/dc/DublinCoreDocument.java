@@ -15,6 +15,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import edu.asu.lib.jaxb.JaxbDocument;
@@ -38,30 +40,41 @@ public class DublinCoreDocument implements JaxbDocument {
 	private List<String> coverage;
 	private List<String> rights;
 	
-	private static final JAXBContext context;
-	private static final Schema schema;
+	private static JAXBContext context;
+	private static Schema schema;
 	
 	public static final String OAIDC_SCHEMA_NAMESPACE = "http://www.openarchives.org/OAI/2.0/oai_dc/";
 	public static final String OAIDC_SCHEMA_URL = "http://www.openarchives.org/OAI/2.0/oai_dc.xsd";
 	public static final String OAIDC_SCHEMA_LOCATION = String.format("%s %s", OAIDC_SCHEMA_NAMESPACE, OAIDC_SCHEMA_URL);
 	public static final String DC_NAMESPACE = "http://purl.org/dc/elements/1.1/";
 	
+	private static final Logger log = LoggerFactory.getLogger(DublinCoreDocument.class);
+	
 	static {
-		try {
+		try{
 			context = JAXBContext.newInstance(DublinCoreDocument.class);
-			SchemaFactory sfact = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			InputStream schemaStream = DublinCoreDocument.class.getResourceAsStream("/oai_dc.xsd");
-			if (schemaStream != null) {
-				schema = sfact.newSchema(new StreamSource(schemaStream));
-			} else {
-				schema = sfact.newSchema(new URL(OAIDC_SCHEMA_URL));
-			}
 		} catch (JAXBException e) {
 			throw new RuntimeException("Failed to create the JAXB context for DublinCoreDocument", e);
-		} catch (SAXException e) {
-			throw new RuntimeException("Failed to parse schema.", e);
-		} catch (MalformedURLException e) {
-			throw new RuntimeException("The OAIDC_SCHEMA_URL " + OAIDC_SCHEMA_URL + " is bad.");
+		}
+		SchemaFactory sfact = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		InputStream schemaStream = DublinCoreDocument.class.getResourceAsStream("/oai_dc.xsd");
+		if (schemaStream != null) {
+			try {
+				schema = sfact.newSchema(new StreamSource(schemaStream));
+			} catch (SAXException e) {
+				log.debug("Failed to parse schema.", e);
+			}
+		}
+		if (schema == null) {
+			try {
+				schema = sfact.newSchema(new URL(OAIDC_SCHEMA_URL));
+			} catch (SAXException e1) {
+				log.debug("Failed to parse schema.", e1);
+				schema = null;
+			} catch (MalformedURLException e1) {
+				log.debug("The OAIDC_SCHEMA_URL " + OAIDC_SCHEMA_URL + " is bad.");
+				schema = null;
+			}
 		}
 	}
 	

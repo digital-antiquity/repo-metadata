@@ -24,6 +24,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import edu.asu.lib.jaxb.JaxbDocument;
@@ -32,32 +34,44 @@ import edu.asu.lib.jaxb.JaxbDocument;
 public class FoxmlDocument implements JaxbDocument{
 
 	private static final ObjectFactory foxmlFactory = new ObjectFactory();
-	private static final JAXBContext jaxbContext;
-    private static final Schema schema;
+	private static JAXBContext jaxbContext;
+    private static Schema schema;
     public static final String FOXML_1_1_FORMAT_URI = "info:fedora/fedora-system:FOXML-1.1";
     public static final String FOXML_SCHEMA_URL = "http://www.fedora-commons.org/definitions/1/0/foxml1-1.xsd";
     public static final String FOXML_SCHEMA_NAMESPACE = "info:fedora/fedora-system:def/foxml#";
     public static final String FOXML_SCHEMA_LOCATION = String.format("%s %s", FOXML_SCHEMA_NAMESPACE, FOXML_SCHEMA_URL);
+    
+    private static final Logger log = LoggerFactory.getLogger(FoxmlDocument.class);
     
     private DigitalObject foxml;
     
     static {
 		try {
 			jaxbContext = JAXBContext.newInstance("info.fedora.foxml");
-			SchemaFactory sfact = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			InputStream schemaStream = FoxmlDocument.class.getResourceAsStream("/foxml1-1.xsd");
-			if (schemaStream != null) {
-				schema = sfact.newSchema(new StreamSource(schemaStream));
-			} else {
-				schema = sfact.newSchema(new URL(FOXML_SCHEMA_URL));
-			}
 		} catch (JAXBException e) {
 			throw new RuntimeException("Failed to create the JAXB context for FoxmlDocument", e);
-		} catch (SAXException e) {
-			throw new RuntimeException("Failed to parse schema.", e);
-		} catch (MalformedURLException e) {
-			throw new RuntimeException("The FOXML_SCHEMA_URL " + FOXML_SCHEMA_URL + " is bad.");
-		} 
+		}
+		SchemaFactory sfact = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		InputStream schemaStream = FoxmlDocument.class.getResourceAsStream("/foxml1-1.xsd");
+		if (schemaStream != null) {
+			try {
+				schema = sfact.newSchema(new StreamSource(schemaStream));
+			} catch (SAXException e) {
+				log.debug("Failed to parse schema.", e);
+			}
+		}  
+		
+		if (schema == null) {
+			try {
+				schema = sfact.newSchema(new URL(FOXML_SCHEMA_URL));
+			} catch (SAXException e) {
+				log.debug("Failed to parse schema.", e);
+				schema = null;
+			} catch (MalformedURLException e) {
+				log.debug("The FOXML_SCHEMA_URL " + FOXML_SCHEMA_URL + " is bad.");
+				schema = null;
+			} 
+		}
 	}
     
     public FoxmlDocument() {

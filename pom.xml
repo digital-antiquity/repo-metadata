@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.asu.lib</groupId>
   <artifactId>jaxb-document-api</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <description>JaxbDocument interface and utility classes for writing, transforming, and parsing 
     implementations.</description>
   <scm>
@@ -50,6 +50,20 @@
   		<groupId>commons-lang</groupId>
   		<artifactId>commons-lang</artifactId>
   		<version>2.4</version>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.slf4j</groupId>
+  		<artifactId>slf4j-api</artifactId>
+  		<version>1.6.1</version>
+  		<type>jar</type>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.slf4j</groupId>
+  		<artifactId>slf4j-log4j12</artifactId>
+  		<version>1.6.1</version>
+  		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>
   </dependencies>
