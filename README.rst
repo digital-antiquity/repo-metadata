@@ -1,3 +1,6 @@
+This repoisitory is no longer used or maintained.
+-------------------------------------------------
+
 Repository XML Metadata Libraries
 
 This project offers JAX-B bindings and helpers for building XML metadata.
