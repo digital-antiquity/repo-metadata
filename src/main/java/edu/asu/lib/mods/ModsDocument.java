@@ -8,6 +8,7 @@ import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -19,6 +20,7 @@ import org.xml.sax.SAXException;
 import edu.asu.lib.jaxb.JaxbDocument;
 import gov.loc.mods.v3.ModsType;
 
+@XmlRootElement(name="mods", namespace=ModsDocument.MODS_SCHEMA_NAMESPACE)
 public class ModsDocument extends ModsElementContainer implements JaxbDocument {
     
     private static JAXBContext jaxbContext;
