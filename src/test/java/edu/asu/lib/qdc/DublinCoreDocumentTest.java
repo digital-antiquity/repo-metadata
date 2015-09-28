@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 
 import javax.xml.bind.JAXBException;
 
+import org.purl.dc.terms.ObjectFactory;
+
 import junit.framework.TestCase;
 import edu.asu.lib.jaxb.JaxbDocumentWriter;
 
@@ -14,6 +16,8 @@ public class DublinCoreDocumentTest extends TestCase {
 		QualifiedDublinCoreDocument dc = new QualifiedDublinCoreDocument();
 		dc.addTitle("Hi Title");
 		dc.addEducationLevel("K-12");
+		ObjectFactory of = new ObjectFactory();
+		dc.addSpatial("1","1","1","1");
 //		assertTrue(dc.getTitle().get(0).equals("Hi Title"));
 //		dc.getCreator().add("You are a creator");
 //		dc.getContributor().add("Harry Reinhold");
