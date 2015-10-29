@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.asu.lib</groupId>
     <artifactId>jaxb-document-api</artifactId>
-    <version>1.0.4.1</version>
+    <version>1.0.5-SNAPSHOT</version>
     <description>JaxbDocument interface and utility classes for writing, transforming, and parsing 
     implementations.</description>
     <scm>
