@@ -12,3 +12,7 @@ Currently supplied schema:
 * OAI Dublin Core
 * MODS v3.3
 * FOXML
+
+
+
+xjc -d src/main/java/ -p org.datacite.v41 metadata.xsd 

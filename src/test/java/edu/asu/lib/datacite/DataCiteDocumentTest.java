@@ -1,4 +1,4 @@
-package edu.asu.lib.qdc;
+package edu.asu.lib.datacite;
 
 import java.io.ByteArrayOutputStream;
 
@@ -9,15 +9,17 @@ import org.purl.dc.terms.ObjectFactory;
 import junit.framework.TestCase;
 import edu.asu.lib.jaxb.JaxbDocumentWriter;
 
-public class DublinCoreDocumentTest extends TestCase {
+public class DataCiteDocumentTest extends TestCase {
 
 	public void testDublinCoreDocument() {
 		
-		QualifiedDublinCoreDocument dc = new QualifiedDublinCoreDocument();
+		DataCiteDocument dc = new DataCiteDocument();
 		dc.addTitle("Hi Title");
-		dc.addEducationLevel("K-12");
-		ObjectFactory of = new ObjectFactory();
-		dc.addSpatial("1","1","1","1");
+		dc.setIdentifier("10.0.1234/what");
+		dc.setPublisher("New york times");
+		dc.setPublicationYear(1234);
+		dc.setResourceType("DATASET");
+		dc.addPersonalCreator("gray","brady");
 //		assertTrue(dc.getTitle().get(0).equals("Hi Title"));
 //		dc.getCreator().add("You are a creator");
 //		dc.getContributor().add("Harry Reinhold");

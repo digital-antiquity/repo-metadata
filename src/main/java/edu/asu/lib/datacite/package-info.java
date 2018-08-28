@@ -5,5 +5,5 @@
 // Generated on: 2015.09.26 at 07:49:23 AM MST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://ns.dataone.org/metadata/schema/onedcx/v1.0", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package edu.asu.lib.qdc;
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://datacite.org/schema/kernel-4", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+package edu.asu.lib.datacite;
