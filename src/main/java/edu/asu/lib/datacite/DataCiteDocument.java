@@ -14,6 +14,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.apache.commons.lang.StringUtils;
+import org.datacite.v41.Box;
 import org.datacite.v41.ContributorType;
 import org.datacite.v41.DateType;
 import org.datacite.v41.DescriptionType;
@@ -21,6 +23,7 @@ import org.datacite.v41.FunderIdentifierType;
 import org.datacite.v41.NameType;
 import org.datacite.v41.ObjectFactory;
 import org.datacite.v41.RelatedIdentifierType;
+import org.datacite.v41.RelationType;
 import org.datacite.v41.Resource;
 import org.datacite.v41.Resource.AlternateIdentifiers;
 import org.datacite.v41.Resource.AlternateIdentifiers.AlternateIdentifier;
@@ -30,6 +33,7 @@ import org.datacite.v41.Resource.Contributors.Contributor.ContributorName;
 import org.datacite.v41.Resource.Creators;
 import org.datacite.v41.Resource.Creators.Creator;
 import org.datacite.v41.Resource.Creators.Creator.CreatorName;
+import org.datacite.v41.Resource.Creators.Creator.NameIdentifier;
 import org.datacite.v41.Resource.Dates;
 import org.datacite.v41.Resource.Dates.Date;
 import org.datacite.v41.Resource.Descriptions;
@@ -177,15 +181,16 @@ public class DataCiteDocument implements JaxbDocument {
         resource.getRightsList().getRights().add(rights);
     }
 
-    public void addGeoLocation(Float n, Float s, Float e, Float w) {
+    public void addGeoLocation(Double double1, Double double2, Double double3, Double double4) {
         if (resource.getGeoLocations() == null) {
             resource.setGeoLocations(new GeoLocations());
         }
         GeoLocation loc = new GeoLocation();
-        loc.getGeoLocationBox().setNorthBoundLatitude(n);
-        loc.getGeoLocationBox().setSouthBoundLatitude(s);
-        loc.getGeoLocationBox().setEastBoundLongitude(e);
-        loc.getGeoLocationBox().setWestBoundLongitude(w);
+        loc.setGeoLocationBox(new Box());;
+        loc.getGeoLocationBox().setNorthBoundLatitude(double1.floatValue());
+        loc.getGeoLocationBox().setSouthBoundLatitude(double2.floatValue());
+        loc.getGeoLocationBox().setEastBoundLongitude(double3.floatValue());
+        loc.getGeoLocationBox().setWestBoundLongitude(double4.floatValue());
         resource.getGeoLocations().getGeoLocation().add(loc);
     }
 
@@ -217,15 +222,19 @@ public class DataCiteDocument implements JaxbDocument {
         resource.getDates().getDate().add(date);
     }
 
-    public void addSubject(String subject) {
+    public void addSubject(String subject, String uri, String scheme, String schemeUri) {
         if (resource.getSubjects() == null) {
             resource.setSubjects(new Subjects());
         }
         Subject sub = new Subject();
         sub.setValue(subject);
-        // sub.setSchemeURI(value);
-        // sub.setSubjectScheme(value);
-        // sub.setValueURI(value);
+        if (StringUtils.isNotBlank(scheme) && StringUtils.isNotBlank(schemeUri)) {
+            sub.setSchemeURI(schemeUri);
+            sub.setSubjectScheme(scheme);
+        }
+        if (StringUtils.isNotBlank(uri)) {
+            sub.setValueURI(uri);
+        }
         resource.getSubjects().getSubject().add(sub);
     }
 
@@ -243,6 +252,7 @@ public class DataCiteDocument implements JaxbDocument {
         RelatedIdentifier ident = new RelatedIdentifier();
         ident.setValue(identifier);
         ident.setRelatedIdentifierType(type);
+        ident.setRelationType(RelationType.IS_IDENTICAL_TO);
         if (resource.getRelatedIdentifiers() == null) {
             resource.setRelatedIdentifiers(new RelatedIdentifiers());
         }
@@ -263,16 +273,21 @@ public class DataCiteDocument implements JaxbDocument {
         if (resource.getContributors() == null) {
             resource.setContributors(new Contributors());
         }
-        Contributor e = new Contributor();
-        // e.getNameIdentifier().add
-        resource.getContributors().getContributor().add(e);
+        resource.getContributors().getContributor().add(c);
     }
 
-    public void addPersonalCreator(String firstName, String lastName) {
+    public void addPersonalCreator(String firstName, String lastName, String string) {
         Creator c = new Creator();
         CreatorName name = new CreatorName();
         name.setNameType(NameType.PERSONAL);
         name.setValue(firstName + " " + lastName);
+        if (StringUtils.isNotBlank(string)) {
+            NameIdentifier ident= new NameIdentifier();
+            ident.setNameIdentifierScheme("ORCID");
+            ident.setValue(string);
+            ident.setSchemeURI("http://orcid.org");
+            c.getNameIdentifier().add(ident);
+        }
         c.setCreatorName(name);
         createCreator(c);
     }
@@ -323,9 +338,9 @@ public class DataCiteDocument implements JaxbDocument {
         resource.setPublicationYear(i.toString());
     }
 
-    public void setResourceType(String string) {
+    public void setResourceType(org.datacite.v41.ResourceType type) {
         ResourceType rt = new ResourceType();
-        rt.setResourceTypeGeneral(org.datacite.v41.ResourceType.valueOf(string));
+        rt.setResourceTypeGeneral(type);
         resource.setResourceType(rt);
     }
 

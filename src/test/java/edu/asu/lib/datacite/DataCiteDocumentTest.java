@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 
 import javax.xml.bind.JAXBException;
 
+import org.datacite.v41.ResourceType;
 import org.purl.dc.terms.ObjectFactory;
 
 import junit.framework.TestCase;
@@ -18,8 +19,8 @@ public class DataCiteDocumentTest extends TestCase {
 		dc.setIdentifier("10.0.1234/what");
 		dc.setPublisher("New york times");
 		dc.setPublicationYear(1234);
-		dc.setResourceType("DATASET");
-		dc.addPersonalCreator("gray","brady");
+		dc.setResourceType(ResourceType.DATASET);
+		dc.addPersonalCreator("gray","brady",null);
 //		assertTrue(dc.getTitle().get(0).equals("Hi Title"));
 //		dc.getCreator().add("You are a creator");
 //		dc.getContributor().add("Harry Reinhold");
