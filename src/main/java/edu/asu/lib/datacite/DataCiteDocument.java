@@ -10,26 +10,50 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.crypto.Data;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.datacite.v41.ContributorType;
+import org.datacite.v41.DateType;
+import org.datacite.v41.DescriptionType;
+import org.datacite.v41.FunderIdentifierType;
 import org.datacite.v41.NameType;
 import org.datacite.v41.ObjectFactory;
+import org.datacite.v41.RelatedIdentifierType;
 import org.datacite.v41.Resource;
+import org.datacite.v41.Resource.AlternateIdentifiers;
+import org.datacite.v41.Resource.AlternateIdentifiers.AlternateIdentifier;
+import org.datacite.v41.Resource.Contributors;
+import org.datacite.v41.Resource.Contributors.Contributor;
+import org.datacite.v41.Resource.Contributors.Contributor.ContributorName;
 import org.datacite.v41.Resource.Creators;
 import org.datacite.v41.Resource.Creators.Creator;
 import org.datacite.v41.Resource.Creators.Creator.CreatorName;
+import org.datacite.v41.Resource.Dates;
+import org.datacite.v41.Resource.Dates.Date;
+import org.datacite.v41.Resource.Descriptions;
+import org.datacite.v41.Resource.Descriptions.Description;
+import org.datacite.v41.Resource.Formats;
+import org.datacite.v41.Resource.FundingReferences;
+import org.datacite.v41.Resource.FundingReferences.FundingReference;
+import org.datacite.v41.Resource.FundingReferences.FundingReference.AwardNumber;
+import org.datacite.v41.Resource.FundingReferences.FundingReference.FunderIdentifier;
+import org.datacite.v41.Resource.GeoLocations;
+import org.datacite.v41.Resource.GeoLocations.GeoLocation;
 import org.datacite.v41.Resource.Identifier;
+import org.datacite.v41.Resource.RelatedIdentifiers;
+import org.datacite.v41.Resource.RelatedIdentifiers.RelatedIdentifier;
 import org.datacite.v41.Resource.ResourceType;
+import org.datacite.v41.Resource.RightsList;
+import org.datacite.v41.Resource.RightsList.Rights;
+import org.datacite.v41.Resource.Sizes;
+import org.datacite.v41.Resource.Subjects;
+import org.datacite.v41.Resource.Subjects.Subject;
 import org.datacite.v41.Resource.Titles;
 import org.datacite.v41.Resource.Titles.Title;
-import org.datacite.v41.TitleType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXException;
 
 import edu.asu.lib.ResourceResolver;
@@ -114,11 +138,134 @@ public class DataCiteDocument implements JaxbDocument {
         resource.getTitles().getTitle().add(title);
     }
 
+    public void setLanguage(String language) {
+        resource.setLanguage(language);
+    }
+
+    public void addFormat(String format) {
+        if (resource.getFormats() == null) {
+            resource.setFormats(new Formats());
+        }
+        resource.getFormats().getFormat().add(format);
+    }
+
+    public void addFundingReference(String title, String funder, FunderIdentifierType identifierType, String identifier, String awardNumber, String uri) {
+        if (resource.getFundingReferences() == null) {
+            resource.setFundingReferences(new FundingReferences());
+        }
+        FundingReference funding = new FundingReference();
+        AwardNumber number = new AwardNumber();
+        number.setAwardURI(uri);
+        number.setValue(awardNumber);
+        funding.setAwardNumber(number);
+        funding.setAwardTitle(title);
+        FunderIdentifier funderIdent = new FunderIdentifier();
+        funderIdent.setFunderIdentifierType(identifierType);
+        funderIdent.setValue(identifier);
+        funding.setFunderIdentifier(funderIdent);
+        funding.setFunderName(funder);
+        resource.getFundingReferences().getFundingReference().add(funding);
+    }
+
+    public void addRightsList(String format, String url) {
+        if (resource.getRightsList() == null) {
+            resource.setRightsList(new RightsList());
+        }
+        Rights rights = new Rights();
+        rights.setValue(format);
+        rights.setRightsURI(url);
+        resource.getRightsList().getRights().add(rights);
+    }
+
+    public void addGeoLocation(Float n, Float s, Float e, Float w) {
+        if (resource.getGeoLocations() == null) {
+            resource.setGeoLocations(new GeoLocations());
+        }
+        GeoLocation loc = new GeoLocation();
+        loc.getGeoLocationBox().setNorthBoundLatitude(n);
+        loc.getGeoLocationBox().setSouthBoundLatitude(s);
+        loc.getGeoLocationBox().setEastBoundLongitude(e);
+        loc.getGeoLocationBox().setWestBoundLongitude(w);
+        resource.getGeoLocations().getGeoLocation().add(loc);
+    }
+
+    public void addSize(String format) {
+        if (resource.getSizes() == null) {
+            resource.setSizes(new Sizes());
+        }
+        resource.getSizes().getSize().add(format);
+    }
+
+    public void setVersion(String value) {
+        resource.setVersion(value);
+    }
+
     public void setIdentifier(String identifier) {
         Identifier ident = new Identifier();
         ident.setValue(identifier);
         ident.setIdentifierType("DOI");
         resource.setIdentifier(ident);
+    }
+
+    public void addDate(String value, DateType type) {
+        Date date = new Date();
+        date.setDateType(type);
+        date.setValue(value);
+        if (resource.getDates() == null) {
+            resource.setDates(new Dates());
+        }
+        resource.getDates().getDate().add(date);
+    }
+
+    public void addSubject(String subject) {
+        if (resource.getSubjects() == null) {
+            resource.setSubjects(new Subjects());
+        }
+        Subject sub = new Subject();
+        sub.setValue(subject);
+        // sub.setSchemeURI(value);
+        // sub.setSubjectScheme(value);
+        // sub.setValueURI(value);
+        resource.getSubjects().getSubject().add(sub);
+    }
+
+    public void addIdentifier(String identifier, String type) {
+        AlternateIdentifier ident = new AlternateIdentifier();
+        ident.setValue(identifier);
+        ident.setAlternateIdentifierType(type);
+        if (resource.getAlternateIdentifiers() == null) {
+            resource.setAlternateIdentifiers(new AlternateIdentifiers());
+        }
+        resource.getAlternateIdentifiers().getAlternateIdentifier().add(ident);
+    }
+
+    public void addRelatedIdentifier(String identifier, RelatedIdentifierType type) {
+        RelatedIdentifier ident = new RelatedIdentifier();
+        ident.setValue(identifier);
+        ident.setRelatedIdentifierType(type);
+        if (resource.getRelatedIdentifiers() == null) {
+            resource.setRelatedIdentifiers(new RelatedIdentifiers());
+        }
+        resource.getRelatedIdentifiers().getRelatedIdentifier().add(ident);
+    }
+
+    public void addDescription(String text, DescriptionType type) {
+        Description description = new Description();
+        description.setDescriptionType(type);
+        description.getContent().add(text);
+        if (resource.getDescriptions() == null) {
+            resource.setDescriptions(new Descriptions());
+        }
+        resource.getDescriptions().getDescription().add(description);
+    }
+
+    private void addContributor(Contributor c) {
+        if (resource.getContributors() == null) {
+            resource.setContributors(new Contributors());
+        }
+        Contributor e = new Contributor();
+        // e.getNameIdentifier().add
+        resource.getContributors().getContributor().add(e);
     }
 
     public void addPersonalCreator(String firstName, String lastName) {
@@ -137,6 +284,26 @@ public class DataCiteDocument implements JaxbDocument {
         name.setValue(cname);
         c.setCreatorName(name);
         createCreator(c);
+    }
+
+    public void addPersonalContributor(String firstName, String lastName, ContributorType type) {
+        Contributor c = new Contributor();
+        ContributorName name = new ContributorName();
+        name.setNameType(NameType.PERSONAL);
+        name.setValue(firstName + " " + lastName);
+        c.setContributorName(name);
+        c.setContributorType(type);
+        addContributor(c);
+    }
+
+    public void addInstitutionalContributor(String cname, ContributorType type) {
+        Contributor c = new Contributor();
+        ContributorName name = new ContributorName();
+        name.setNameType(NameType.PERSONAL);
+        name.setValue(cname);
+        c.setContributorName(name);
+        c.setContributorType(type);
+        addContributor(c);
     }
 
     private void createCreator(Creator c) {
