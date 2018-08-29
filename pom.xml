@@ -3,13 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.asu.lib</groupId>
     <artifactId>jaxb-document-api</artifactId>
-    <version>1.0.7-SNAPSHOT</version>
+    <version>1.0.8.SNAPSHOT</version>
     <description>JaxbDocument interface and utility classes for writing, transforming, and parsing 
     implementations.</description>
     <scm>
         <url>https://github.com/digital-antiquity/repo-metadata/</url>
         <connection>scm:git:https://github.com/digital-antiquity/repo-metadata</connection>
-        <developerConnection>scm:git:ssh://git@github.com:digital-antiquity/repo-metadata</developerConnection>
+        <developerConnection>scm:git:git@github.com:digital-antiquity/repo-metadata</developerConnection>
+    <tag>jaxb-document-api-1.0.7</tag>
   </scm>
     <organization>
         <name>Arizona State University Libraries</name>
