@@ -10,7 +10,7 @@
     <scm>
         <url>https://github.com/digital-antiquity/repo-metadata/</url>
         <connection>scm:git:https://github.com/digital-antiquity/repo-metadata</connection>
-        <developerConnection>scm:git:https://github.com/digital-antiquity/repo-metadata</developerConnection>
+        <developerConnection>scm:git:ssh://git@github.com:digital-antiquity/repo-metadata</developerConnection>
     </scm>
     <organization>
         <name>Arizona State University Libraries</name>
